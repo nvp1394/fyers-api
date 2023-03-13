@@ -1,26 +1,9 @@
-from ..config.secret import totp_secret, pin, app_id, app_type, secret_id
 import pyotp
 import json
 import requests
 import pyotp
 from urllib import parse
-import sys
-import hashlib
-from fyers_api import accessToken
 from fyers_api import fyersModel
-
-FY_ID = "XN11163"
-APP_ID_TYPE = "2"
-TOTP_KEY = totp_secret
-PIN = pin
-APP_ID = app_id
-APP_TYPE = app_type
-REDIRECT_URI = "http://127.0.0.1"
-CLIENT_ID = f"{APP_ID}-{APP_TYPE}"
-print(f"{app_id}:{secret_id}")
-APP_ID_HASH = hashlib.sha256(f"{app_id}-{app_type}:{secret_id}".encode("utf-8")).hexdigest()
-print(APP_ID_HASH)
-# APP_ID_HASH = "8cc8eb5492894d9e6ff1b3eddba4e659ce178e*************************2"  # SHA-256 hash of appId-appType:appSecret
 
 # API endpoints
 

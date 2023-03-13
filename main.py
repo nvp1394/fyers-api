@@ -1,4 +1,6 @@
 from src.utils.functions import *
+from src.config.secret import *
+import sys
 
 def run():
 
@@ -12,7 +14,7 @@ def run():
         print("send_login_otp success")
 
     # Step 2 - Generate totp
-    generate_totp_result = generate_totp(secret=TOTP_KEY)
+    generate_totp_result = generate_totp(secret=totp_secret)
     if generate_totp_result[0] != SUCCESS:
         print(f"generate_totp failure - {generate_totp_result[1]}")
         sys.exit()
@@ -30,7 +32,7 @@ def run():
 
     # Step 4 - Verify pin and send back access token
     request_key_2 = verify_totp_result[1]
-    verify_pin_result = verify_PIN(request_key=request_key_2, pin=PIN)
+    verify_pin_result = verify_PIN(request_key=request_key_2, pin=pin)
     if verify_pin_result[0] != SUCCESS:
         print(f"verify_pin_result failure - {verify_pin_result[1]}")
         sys.exit()
@@ -38,7 +40,7 @@ def run():
         print("verify_pin_result success")
     # Step 5 - Get auth code for API V2 App from trade access token
     token_result = token(
-        fy_id=FY_ID, app_id=APP_ID, redirect_uri=REDIRECT_URI, app_type=APP_TYPE,
+        fy_id=FY_ID, app_id=app_id, redirect_uri=REDIRECT_URI, app_type=app_type,
         access_token=verify_pin_result[1]
     )
     if token_result[0] != SUCCESS:
@@ -59,8 +61,5 @@ def run():
     else:
         print("validate_authcode success")
 
-    access_token = APP_ID + "-" + APP_TYPE + ":" + validate_authcode_result[1]
-
-    print(f"access_token - {access_token}")
-
     data_api_call(access_token=validate_authcode_result[1], client_id=CLIENT_ID)
+
